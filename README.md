@@ -1,5 +1,4 @@
-# Koa2 FrontEnd
-
+# Koa2 ES7 Web App 
 ## Installation
 
 * `npm install`
