@@ -1,0 +1,20 @@
+{
+  "extends": "airbnb",
+  "env": {
+    "browser": true,
+    "node": true,
+    "amd": true,
+    "commonjs": true,
+    "jasmine": true
+  },
+  "rules": {
+    "comma-dangle": 0,
+    "no-var": 0,
+    "func-names": 0,
+    "object-shorthand": 0,
+    "prefer-arrow-callback": 0,
+    "no-console": 0,
+    "no-param-reassign": ["error", { "props": false }],
+    "react/jsx-filename-extension": [1, { "extensions": [".js"] }]
+  }
+}

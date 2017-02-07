@@ -1,0 +1,15 @@
+.DS_Store
+desktop.ini
+esf.sublime-project
+esf.sublime-workspace
+
+files/*
+env
+assets/release/*
+
+/dist/
+node_modules
+bower_components
+npm-debug.log
+manifest.json
+eslint_log.txt

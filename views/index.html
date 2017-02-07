@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=0">
+  <%- css('vendor') %>
+  <%- css('react') %>
+</head>
+<body>
+  <div class="container">
+    <h1>Koa2 start.</h1>
+    <div id="example"></div>
+    <div>
+      <h5>Ejs assetUrl test<h5>
+      <img src="<%- assetUrl('/img/koa-logo.png') %>">
+    </div>
+    <h1>Koa2 async await Demo (ES7):</h1>
+    <ul>
+      <li><a target="_blank" href="/demo/1">demo1 同步操作</a></li>
+      <li><a target="_blank" href="/demo/2">demo2 异步并发</a></li>
+    </ul>
+
+  </div>
+  <%- script('vendor') %>
+  <%- script('react') %>
+</body>
+</html>
