@@ -16,6 +16,31 @@ async function sleep(key, delay) {
   });
 }
 
+function sleepCallback(key, delay, callback) {
+  setTimeout(function () {
+    return callback({
+      key: key,
+      delay: delay
+    });
+  }, delay);
+}
+
+var sleepPromise = function (key, delay) {
+  return new Promise(function (resolve, reject) {
+    try {
+      setTimeout(function () {
+        resolve({
+          key: key,
+          delay: delay
+        });
+      }, delay);
+    } catch (err) {
+      reject('error');
+    }
+  });
+};
+
+
 async function demo1Fun() {
   const list = [
     { key: 'a', delay: 50 },
@@ -86,6 +111,52 @@ router.get('/demo/2', async (ctx) => {
     usedTime: `${new Date().getTime() - startTime}/ms`
   };
   ctx.body = JSON.stringify(json);
+});
+
+
+// callback
+router.get('/demo/3', async (ctx) => {
+  var list = [];
+  ctx.body = 'Look log.';
+  sleepCallback('a', 50, function (obj1) {
+    list.push(obj1);
+    sleepCallback('b', 50, function (obj2) {
+      list.push(obj2);
+      sleepCallback('c', 50, function (obj3) {
+        list.push(obj3);
+        sleepCallback('d', 50, function (obj4) {
+          list.push(obj4);
+          console.log(list);
+        });
+      });
+    });
+  });
+});
+
+
+// promise
+router.get('/demo/4', async (ctx) => {
+  var list = [];
+  ctx.body = 'Look log.';
+
+  sleepPromise('a', 50).then(function (a) {
+    list.push(a);
+    return sleepPromise('b', 50);
+  })
+  .then(function (b) {
+    list.push(b);
+    return sleepPromise('c', 50);
+  })
+  .then(function (c) {
+    list.push(c);
+    return sleepPromise('d', 50);
+  })
+  .then(function (d) {
+    list.push(d);
+  })
+  .catch(function (e) {
+    console.log(e);
+  });
 });
 
 
