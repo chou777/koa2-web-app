@@ -153,6 +153,7 @@ router.get('/demo/4', async (ctx) => {
   })
   .then(function (d) {
     list.push(d);
+    console.log(list);
   })
   .catch(function (e) {
     console.log(e);
@@ -160,4 +161,4 @@ router.get('/demo/4', async (ctx) => {
 });
 
 
-export default router;
+module.exports = router;
