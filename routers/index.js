@@ -46,6 +46,13 @@ router.get('/', async (ctx) => {
   });
 });
 
+router.get('/test/about', async (ctx) => {
+  await ctx.render('index', {
+    title: 'Koa 2 Demo.',
+    user: 'John'
+  });
+});
+
 // 同步操作
 router.get('/demo/1', async (ctx) => {
   var demo1 = {};
