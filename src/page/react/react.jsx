@@ -1,6 +1,7 @@
 import { Router, Route, Link, browserHistory } from 'react-router';
 import React from 'react';
 import { render } from 'react-dom';
+import PropTypes from 'prop-types';
 
 require('./react.less');
 const img = require('../../img/react-logo.png');
@@ -19,7 +20,7 @@ const App = props => (
 );
 
 App.propTypes = {
-  children: React.PropTypes.element
+  children: PropTypes.element
 };
 
 const About = () => (
