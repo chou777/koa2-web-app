@@ -15,7 +15,7 @@ var cdnPath = '';
 var publicPath = {
   cdn: `//${cdnPath}/${staticPrefix}/`,
   dist: `/assets/${staticPrefix}/`,
-  dev: `//${ip.address()}:${port}/assets/`
+  dev: `//0.0.0.0:${port}/assets/`
 };
 
 var webpackConfig = {

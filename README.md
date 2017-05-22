@@ -1,7 +1,7 @@
-# Koa2 ES7 Web App 
+# Koa2 ES7 Web App
 ## Installation
 
-* `npm install`
+* `yarn install`
 
 ## Start
 

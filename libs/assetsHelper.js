@@ -11,11 +11,11 @@ function getManifest(manifestPath) {
   }
 
   /* eslint global-require: 0 import/no-unresolved: 0 */
-  return require(manifestPath);
+  return require (manifestPath);
 }
 
 helpers = {
-  script: function(file) {
+  script: function (file) {
     var str = '';
     str = `<script src="//${host}:${port}/assets/${file}.js"></script>`;
 
@@ -114,10 +114,10 @@ module.exports = (config, manifestPath, type) => {
   manifestJson = getManifest(manifestPath);
   return (ctx, next) => {
     host = ctx.header.host.replace(/:\d+/, '');
-    Object.keys(helpers).forEach(function(key) {
+    Object.keys(helpers).forEach(function (key) {
       ctx.state[key] = helpers[key];
     });
 
-    return next()
+    return next();
   };
 };
