@@ -14,7 +14,7 @@ const app = new Koa();
 app.use(assetsHelper(packageConfig, path.join(__dirname, 'manifest.json'), config('assets')));
 
 // Static files settings.
-app.use(mount('/assets', serve(`${__dirname}/src/`)));
+app.use(mount('/assets', serve(`${__dirname}/../client/`)));
 
 // Template settings.
 app.use(views(`${__dirname}/views`, {

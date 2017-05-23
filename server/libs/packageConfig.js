@@ -1,4 +1,4 @@
-var npmPackage = require('../package.json');
+var npmPackage = require('../../package.json');
 
 var appName = npmPackage.name;
 var port = npmPackage.config.port;

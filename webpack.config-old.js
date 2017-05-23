@@ -45,7 +45,6 @@ var webpackConfig = {
         loader: 'babel-loader',
         options: {
           presets: ['es2015']
-            // plugins: ['transform-runtime']
         }
       }]
     }, {

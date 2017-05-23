@@ -6,21 +6,19 @@ var extractLess = new ExtractTextPlugin({
 });
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'nosources-source-map',
   entry: {
     react: [
-      './src/page/react/react.jsx',
-      './src/page/react/react.less'
+      './client/page/react/react.jsx',
+      './client/page/react/react.less'
     ],
     vendor: [
-      './src/css/common.less'
+      './node_modules/normalize.css/normalize.css',
+      './client/css/common.less'
     ]
   },
   module: {
     loaders: [{
-      test: /\.html$/,
-      use: 'raw-loader'
-    }, {
       test: /\.jsx$/,
       use: [{
         loader: 'babel-loader',
@@ -41,7 +39,13 @@ module.exports = {
       })
     }, {
       test: /\.css$/,
-      use: ['style-loader', 'css-loader']
+      use: extractLess.extract({
+        use: [{
+          loader: 'css-loader'
+        }],
+        // use style-loader in development
+        fallback: 'style-loader'
+      })
     }, {
       test: /\.(jpg|jpeg|gif|png)$/i,
       use: [

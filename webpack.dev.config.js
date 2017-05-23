@@ -1,9 +1,9 @@
 var webpack = require('webpack');
-var path    = require('path');
-var config  = require('./webpack.config');
-var packageConfig = require('./libs/packageConfig');
-var port = packageConfig.staticPort;
-var staticPrefix = packageConfig.staticPrefix;
+var path = require('path');
+var config = require('./webpack.config');
+var packageConfig = require('./package.json');
+
+var port = packageConfig.config.clientPort;
 
 config.output = {
   filename: '[name].js',
