@@ -23,6 +23,7 @@
   "author": "zhouziyao",
   "license": "ISC",
   "dependencies": {
+    "autoprefixer": "^7.1.1",
     "css-loader": "^0.28.2",
     "ejs": "^2.5.5",
     "file-loader": "^0.9.0",

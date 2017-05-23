@@ -1,9 +1,16 @@
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var autoprefixer = require('autoprefixer');
 
 var extractLess = new ExtractTextPlugin({
   filename: '[name].css',
   disable: process.env.NODE_ENV === 'development'
 });
+
+var postCssOptions = {
+  plugins: () => [
+    autoprefixer({ browsers: ['last 2 versions'] }),
+  ]
+};
 
 module.exports = {
   devtool: 'nosources-source-map',
@@ -14,7 +21,9 @@ module.exports = {
     ],
     vendor: [
       './node_modules/normalize.css/normalize.css',
-      './client/css/common.less'
+      './client/css/common.less',
+      './client/css/test.css',
+
     ]
   },
   module: {
@@ -32,6 +41,8 @@ module.exports = {
         use: [{
           loader: 'css-loader'
         }, {
+          loader: 'postcss-loader', options: postCssOptions
+        }, {
           loader: 'less-loader'
         }],
         // use style-loader in development
@@ -42,6 +53,9 @@ module.exports = {
       use: extractLess.extract({
         use: [{
           loader: 'css-loader'
+        }, {
+          loader: 'postcss-loader', options: postCssOptions
+
         }],
         // use style-loader in development
         fallback: 'style-loader'
