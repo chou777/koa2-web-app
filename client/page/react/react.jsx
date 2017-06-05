@@ -21,6 +21,7 @@ class App extends React.Component {
         <h2>{this.state.stateX}</h2>
         <h3>My name is {this.props.name}</h3>
         <ul>
+          <li><a href="/page1">Page1</a></li>
           <li><Link to={'/'}>link to home</Link></li>
           <li><Link to="/about">link to about</Link></li>
         </ul>
