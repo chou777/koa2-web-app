@@ -46,9 +46,17 @@ router.get('/', async (ctx) => {
   });
 });
 
-router.get('/test/about', async (ctx) => {
+
+router.get('/about', async (ctx) => {
   await ctx.render('index', {
     title: 'Koa 2 Demo.',
+    user: 'John'
+  });
+});
+
+router.get('/page1*', async (ctx) => {
+  await ctx.render('page1', {
+    title: 'Koa page1.',
     user: 'John'
   });
 });

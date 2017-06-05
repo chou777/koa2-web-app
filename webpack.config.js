@@ -18,11 +18,9 @@ module.exports = {
   entry: {
     react: [
       './client/page/react/react.jsx',
-      './client/page/react/react.less'
     ],
     page1: [
       './client/page/page1/page1.jsx',
-      './client/page/page1/page1.less'
     ],
     vendor: [
       './node_modules/normalize.css/normalize.css',

@@ -15,14 +15,13 @@ var manifest = function () {
         assetsByChunkName[module.name] = module.assets[0];
       }
     });
-    console.log(assetsByChunkName);
-
     fs.writeFileSync(
       path.join(__dirname, 'manifest.json'),
       JSON.stringify(assetsByChunkName)
     );
   });
 };
+
 
 config.output = {
   filename: '[name].[chunkhash:8].js',

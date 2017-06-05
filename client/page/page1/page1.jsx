@@ -1,4 +1,4 @@
-import { Router, Route, Link, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
 import React from 'react';
 import { render } from 'react-dom';
 import PropTypes from 'prop-types';
@@ -6,38 +6,63 @@ import PropTypes from 'prop-types';
 require('./page1.less');
 const img = require('../../img/react-logo.png');
 
-const App = props => (
-  <div>
-    <ul>
-      <li><Link to={'/'}>link to app</Link></li>
-      <li><Link to="/test/about">link to about</Link></li>
-    </ul>
-    {props.children || <div>App Page</div>}
-    <div>
-      <img className="img-test" src={img} alt="img test" />
-    </div>
-  </div>
-);
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { stateX: 'Is state X' };
+  }
+  componentDidMount() {
+    console.log('componentDidAmount');
+  }
+  render() {
+    return (
+      <div>
+        <h2>{this.state.stateX}</h2>
+        <h3>My name is {this.props.name}</h3>
+        <ul>
+          <li><Link to={'/page1'}>link to home</Link></li>
+          <li><Link to="/page1/about">link to about</Link></li>
+        </ul>
+        {this.props.children}
+        <div>
+          <img className="img-test" src={img} alt="img test" />
+        </div>
+      </div>
+    );
+  }
+}
+
+App.defaultProps = {
+  name: 'Zac',
+  children: '<div>App Page</div>'
+};
 
 App.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.element.isRequired,
+  name: PropTypes.string
 };
 
-const About = () => {
-  console.log('page1ssss');
-  return (<div>About Page</div>);
-};
+const Home = () => (
+  <div>Home Page</div>
+);
+
+const About = () => (
+  <div>About Page</div>
+);
 
 const NoMatch = () => (
-  <h2 style={{ fontWeight: 'bolder' }}>404 Page not fosssund</h2>
+  <h2 style={{ fontWeight: 'bolder' }}>404 Page not found</h2>
 );
 
 render(
   <Router history={browserHistory}>
-    <Route path="/" component={App}>
-      <Route path="about2" component={About} />
+    <Route path="/page1" component={App}>
+      <IndexRoute component={Home} />
+      <Route path="/page1/about" component={About} />
       <Route path="*" component={NoMatch} />
     </Route>
   </Router>,
-  document.getElementById('example2')
+  document.getElementById('example')
 );
+
