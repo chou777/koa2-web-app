@@ -13,3 +13,4 @@ bower_components
 npm-debug.log
 manifest.json
 eslint_log.txt
+yarn.lock

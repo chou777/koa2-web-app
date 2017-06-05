@@ -1,9 +1,10 @@
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var autoprefixer = require('autoprefixer');
-
+var webpack = require('webpack');
+var path = require('path');
 var extractLess = new ExtractTextPlugin({
-  filename: '[name].css',
-  disable: process.env.NODE_ENV === 'development'
+  filename: process.env.NODE_ENV === 'development' ? '[name].css' : '[name].[chunkhash:8].css',
+  disable: false
 });
 
 var postCssOptions = {
@@ -19,11 +20,13 @@ module.exports = {
       './client/page/react/react.jsx',
       './client/page/react/react.less'
     ],
+    page1: [
+      './client/page/page1/page1.jsx',
+      './client/page/page1/page1.less'
+    ],
     vendor: [
       './node_modules/normalize.css/normalize.css',
-      './client/css/common.less',
-      './client/css/test.css',
-
+      './client/css/common.less'
     ]
   },
   module: {
@@ -39,9 +42,13 @@ module.exports = {
       test: /\.less$/,
       use: extractLess.extract({
         use: [{
-          loader: 'css-loader'
+          loader: 'css-loader',
+          options: {
+            minimize: true
+          }
         }, {
-          loader: 'postcss-loader', options: postCssOptions
+          loader: 'postcss-loader',
+          options: postCssOptions
         }, {
           loader: 'less-loader'
         }],
@@ -52,9 +59,13 @@ module.exports = {
       test: /\.css$/,
       use: extractLess.extract({
         use: [{
-          loader: 'css-loader'
+          loader: 'css-loader',
+          options: {
+            minimize: true
+          }
         }, {
-          loader: 'postcss-loader', options: postCssOptions
+          loader: 'postcss-loader',
+          options: postCssOptions
 
         }],
         // use style-loader in development
@@ -69,13 +80,13 @@ module.exports = {
   },
   plugins: [
     extractLess,
-    // 打包Css
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'vendor',
-    //   minChunks: function(module, count) {
-    //     return module.resource && module.resource.indexOf(path.resolve(__dirname, 'client')) === -1;
-    //   }
-    // })
+    // 提取公共模块。
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function (module) {
+        return module.resource && module.resource.indexOf(path.resolve(__dirname, 'client')) === -1;
+      }
+    })
   ]
 };
 

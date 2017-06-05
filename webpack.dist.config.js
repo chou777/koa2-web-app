@@ -1,15 +1,43 @@
 var webpack = require('webpack');
 var path = require('path');
 var config = require('./webpack.config');
+var fs = require('fs');
+
+// 构建manifest文件
+var manifest = function () {
+  this.plugin('done', function (stats) {
+    var statsJson = stats.toJson();
+    var assetsByChunkName = statsJson.assetsByChunkName;
+    var modules = statsJson.modules;
+
+    modules.forEach(function (module) {
+      if (module.assets && module.assets.length) {
+        assetsByChunkName[module.name] = module.assets[0];
+      }
+    });
+    console.log(assetsByChunkName);
+
+    fs.writeFileSync(
+      path.join(__dirname, 'manifest.json'),
+      JSON.stringify(assetsByChunkName)
+    );
+  });
+};
 
 config.output = {
-  filename: '[name].bundle.js',
+  filename: '[name].[chunkhash:8].js',
+  chunkFilename: '[name].[chunkhash:8].js',
   path: path.resolve(__dirname, 'dist/client/')
 };
 
 config.plugins = config.plugins.concat([
-
-  // Reduces bundles total size
+  // React 打包必须设定
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify('production')
+    }
+  }),
+  // Reduces bundles total size Minify
   new webpack.optimize.UglifyJsPlugin({
     mangle: {
 
@@ -19,7 +47,9 @@ config.plugins = config.plugins.concat([
       // angular global variable, so we should keep it unchanged
       except: []
     }
-  })
+  }),
+  manifest
 ]);
 
 module.exports = config;
+
