@@ -1,15 +1,17 @@
 /**
- * @todo 整理代碼
+ * Assets Hepler.
  *
  */
-var config = require('../config');
+const config = require('../config');
 
+const relativePath = 'client';
+const staticType = config('assets') || 'dev'; // dev,dist,cdn: default dev
+const cdnPath = '/';
+
+var manifestJson;
 var host;
 var port;
-var staticType = config('assets') || 'dev'; // dev,dist,cdn: default dev
-var manifestJson;
 var helpers;
-var staticPath = '/';
 
 function getManifest(manifestPath) {
   if (staticType === 'dev') {
@@ -19,49 +21,60 @@ function getManifest(manifestPath) {
   return require(manifestPath);
 }
 
+
 helpers = {
   script: function (file) {
-    var str = '';
-    str = `<script src="//${host}:${port}/assets/${file}.js"></script>`;
-
-    if (staticType === 'dev') {
-      return str;
-    } else if (staticType === 'dist') {
-      if (Array.isArray(manifestJson[file])) {
-        str = `<script src="/assets/${manifestJson[file][0]}"></script>`;
-      } else {
-        str = `<script src="/assets/${manifestJson[file]}"></script>`;
-      }
-    } else {
-      if (Array.isArray(manifestJson[file])) {
-        // eslint-disable-next-line max-len
-        str = `<script src="${staticPath}${manifestJson[file][0]}"></script>`;
-      } else {
-        // eslint-disable-next-line max-len
-        str = `<script src="${staticPath}${manifestJson[file]}"></script>`;
-      }
+    var filePath = '';
+    switch (staticType) {
+      case 'dev':
+        filePath = `//${host}:${port}/assets/${file}.js`;
+        break;
+      case 'dist':
+        if (Array.isArray(manifestJson[file])) {
+          filePath = `/assets/${manifestJson[file][0]}`;
+        } else {
+          filePath = `/assets/${manifestJson[file]}`;
+        }
+        break;
+      case 'cdn':
+        if (Array.isArray(manifestJson[file])) {
+          filePath = `${cdnPath}${manifestJson[file][0]}`;
+        } else {
+          filePath = `${cdnPath}${manifestJson[file]}`;
+        }
+        break;
+      default:
+        filePath = '/';
+        break;
     }
-
-    return str;
+    return `<script src="${filePath}"></script>`;
   },
 
   css: function (file) {
-    var str = '';
-
-    if (staticType === 'dev') {
-      str = `<link rel="stylesheet" href="//${host}:${port}/assets/${file}.css">`;
-    } else if (staticType === 'dist') {
-      if (Array.isArray(manifestJson[file])) {
-        str = `<link rel="stylesheet" href="/assets/${manifestJson[file][1]}">`;
-      }
-    } else {
-      if (Array.isArray(manifestJson[file])) {
-        // eslint-disable-next-line max-len
-        str = `<link rel="stylesheet" href="${staticPath}${manifestJson[file][1]}">`;
-      }
+    var filePath = '';
+    switch (staticType) {
+      case 'dev':
+        filePath = `//${host}:${port}/assets/${file}.css`;
+        break;
+      case 'dist':
+        if (Array.isArray(manifestJson[file])) {
+          filePath = `/assets/${manifestJson[file][1]}`;
+        } else {
+          filePath = `/assets/${manifestJson[file]}`;
+        }
+        break;
+      case 'cdn':
+        if (Array.isArray(manifestJson[file])) {
+          filePath = `${cdnPath}${manifestJson[file][1]}`;
+        } else {
+          filePath = `${cdnPath}${manifestJson[file]}`;
+        }
+        break;
+      default:
+        filePath = '/';
+        break;
     }
-
-    return str;
+    return `<link rel="stylesheet" href="${filePath}">`;
   },
 
   /**
@@ -69,58 +82,66 @@ helpers = {
    * @type is js or css
    */
   assetUrl: function (path, type) {
-    var testPath;
+    var distPath;
     var prdPath;
-    if (staticType === 'dev') {
-      return helpers.formatUrl(path.replace(/^(\/|\.\/)*/, ''));
-    } else if (staticType === 'dist') {
-      testPath = `./client/${path.replace(/^(\/|\.\/)*/, '')}`;
+    var fPath = '';
 
-      if (manifestJson[testPath]) {
-        return helpers.formatUrl(manifestJson[testPath]);
-      }
-
-      return '';
-    } else if (staticType === 'cdn') {
-      // webpack entry
-      if (Array.isArray(manifestJson[path])) {
-        // eslint-disable-next-line max-len
-        return `${staticPath}${((type === 'js' || !type) ? manifestJson[path][0] : manifestJson[path][1])}`;
-      }
-
-      prdPath = `./src/${path.replace(/^(\/|\.\/)*/, '')}`;
-
-      if (manifestJson[prdPath]) {
-        return `${staticPath}${manifestJson[prdPath]}`;
-      }
-
-      return '';
+    switch (staticType) {
+      case 'dev':
+        fPath = helpers.formatUrl(path.replace(/^(\/|\.\/)*/, ''));
+        break;
+      case 'dist':
+        distPath = `./${relativePath}/${path.replace(/^(\/|\.\/)*/, '')}`;
+        if (manifestJson[distPath]) {
+          fPath = helpers.formatUrl(manifestJson[distPath]);
+        }
+        break;
+      case 'cdn':
+        // webpack entry
+        if (Array.isArray(manifestJson[path])) {
+          // eslint-disable-next-line max-len
+          fPath = `${cdnPath}${((type === 'js' || !type) ? manifestJson[path][0] : manifestJson[path][1])}`;
+        }
+        prdPath = `./src/${path.replace(/^(\/|\.\/)*/, '')}`;
+        if (manifestJson[prdPath]) {
+          fPath = `${cdnPath}${manifestJson[prdPath]}`;
+        }
+        break;
+      default:
+        fPath = '';
+        break;
     }
-
-    return path;
+    return fPath;
   },
 
   formatUrl: function (path) {
-    if (staticType === 'dev') {
-      return path ? `/assets/${path}` : '';
-    } else if (staticType === 'dist') {
-      return path ? `/assets/${path}` : '';
-    } else if (staticType === 'cdn') {
-      return path ? `${staticPath}${path}` : '';
+    var fPath = '';
+    switch (staticType) {
+      case 'dev':
+        fPath = path ? `/assets/${path}` : '';
+        break;
+      case 'dist':
+        fPath = path ? `/assets/${path}` : '';
+        break;
+      case 'cdn':
+        fPath = path ? `${cdnPath}${path}` : '';
+        break;
+      default:
+        fPath = '';
+        break;
     }
-    return '';
+    return fPath;
   }
 };
 
-module.exports = (config, manifestPath, type) => {
-  port = config.staticPort;
+module.exports = (packageConfig, manifestPath) => {
   manifestJson = getManifest(manifestPath);
+  port = packageConfig.staticPort;
   return (ctx, next) => {
     host = ctx.header.host.replace(/:\d+/, '');
     Object.keys(helpers).forEach(function (key) {
       ctx.state[key] = helpers[key];
     });
-
     return next();
   };
 };

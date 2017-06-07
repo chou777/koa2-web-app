@@ -3,22 +3,21 @@
  * @description Webpakc Config use for dev and dist
  */
 
-var Koa = require('koa');
-var views = require('koa-views');
-var serve = require('koa-static');
-var mount = require('koa-mount');
-var path = require('path');
-var Routers = require('./routers');
-var assetsHelper = require('./libs/assetsHelper');
-var packageConfig = require('./libs/packageConfig');
-var config = require('./config');
+const Koa = require('koa');
+const views = require('koa-views');
+const serve = require('koa-static');
+const mount = require('koa-mount');
+const path = require('path');
+const Routers = require('./routers');
+const assetsHelper = require('./libs/assetsHelper');
+const packageConfig = require('./libs/packageConfig');
 
 const env = process.env.NODE_ENV || 'development';
 const clientPath = env === 'development' ? '../client' : 'client';
 const app = new Koa();
 
 // Assets Helper.
-app.use(assetsHelper(packageConfig, path.join(__dirname, 'manifest.json'), config('assets')));
+app.use(assetsHelper(packageConfig, path.join(__dirname, 'manifest.json')));
 
 // Static files settings.
 console.log(`${__dirname}/${clientPath}`);
