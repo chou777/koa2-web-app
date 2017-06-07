@@ -9,7 +9,7 @@ var config = {
   // enable or disable @fdd/route-cache
   cache: false,
 
-  assets: 'cdn',
+  assets: 'dist',
 
   redis: {
     prefix: `${packageConfig.prefix}:testing`,

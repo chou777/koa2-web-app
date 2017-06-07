@@ -16,7 +16,7 @@ var manifest = function () {
       }
     });
     fs.writeFileSync(
-      path.join(__dirname, 'manifest.json'),
+      path.join(`${__dirname}/dist`, 'manifest.json'),
       JSON.stringify(assetsByChunkName)
     );
   });
@@ -26,7 +26,8 @@ var manifest = function () {
 config.output = {
   filename: '[name].[chunkhash:8].js',
   chunkFilename: '[name].[chunkhash:8].js',
-  path: path.resolve(__dirname, 'dist/client/')
+  path: path.resolve(__dirname, 'dist/client/'),
+  publicPath: '/assets/',
 };
 
 config.plugins = config.plugins.concat([

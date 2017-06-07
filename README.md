@@ -1,12 +1,13 @@
-# Koa2 ES7 Web App
+# Kepler Node
+
+
 ## Installation
 
 * `yarn install`
 
 ## Start
 
-* `npm run serve`
-* `npm run dev`
+* `npm run dev` or  npm run dev:client , npm run dev:serve two command line
 
 
 ## Test
@@ -18,8 +19,9 @@
 
 * `特点：No Callback !!!!! => 使用了ES7的Async Await 来处理异步同步取代了Callback，`
 
-## Example
 
+
+## Async Example
 ```
 // await 回传必须是一个aysnc function 且返回必须是promise.
 async function sleep(key, delay) {

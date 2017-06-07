@@ -15,6 +15,7 @@
     "build": "npm run clean & npm run build:server && npm run build:client",
     "build:client": "webpack --progress --config webpack.dist.config.js",
     "build:server": "NODE_ENV=production babel ./server -d dist --presets es2015,stage-2 --copy-files --minified",
+    "start:beta": "NODE_ENV=beta node dist app.js",
     "clean": "rm -rf ./dist"
   },
   "keywords": [
@@ -32,7 +33,7 @@
     "font-awesome": "^4.7.0",
     "ip": "^1.1.4",
     "jest": "^18.1.0",
-    "koa": "^2.0.0",
+    "koa": "^2.2.0",
     "koa-mount": "^2.0.0",
     "koa-router": "^7.0.1",
     "koa-static": "^3.0.0",

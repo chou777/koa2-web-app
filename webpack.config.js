@@ -1,3 +1,8 @@
+/**
+ * @author zhouziyao@meituan.com
+ * @description Webpakc Config use for dev and dist
+ */
+
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var autoprefixer = require('autoprefixer');
 var webpack = require('webpack');
@@ -16,6 +21,9 @@ var postCssOptions = {
 module.exports = {
   devtool: 'nosources-source-map',
   entry: {
+    images: [
+      './client/common/js/images.js',
+    ],
     react: [
       './client/page/react/react.jsx',
     ],

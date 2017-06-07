@@ -4,8 +4,9 @@ import { render } from 'react-dom';
 import PropTypes from 'prop-types';
 
 require('./react.less');
-const img = require('../../img/react-logo.png');
 
+
+const img = require('../../img/react-logo.png');
 
 class App extends React.Component {
   constructor(props) {
