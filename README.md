@@ -8,6 +8,7 @@
 ## Start
 
 * `npm run dev` or  npm run dev:client , npm run dev:serve two command line
+* http://localhost:3001
 
 
 ## Test
